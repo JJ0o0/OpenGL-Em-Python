@@ -3,6 +3,7 @@ __pycache__/
 *.pyo
 *.pyd
 evn/
+venv/
 .venv/
 *.log
 *.DS_Store
