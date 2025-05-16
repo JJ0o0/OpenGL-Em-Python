@@ -40,7 +40,7 @@ class Window:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
         glClearColor(0.18, 0.03, 0.26, 1.0)
 
-        self.shader = Shader('shaders/default.vert', 'shaders/default.frag')
+        self.shader = Shader('assets/shaders/default.vert', 'assets/shaders/default.frag')
 
         self.objManager = ObjectManager()
         self.camera = Camera(self.WIDTH, self.HEIGHT)

@@ -20,7 +20,7 @@ class Game: # Sistema pique Unity tlgd
         ]
 
         for i in range(len(self.positions)):
-            self.objectManager.create_cube(i, 'images/zam.jpg', GL_TEXTURE0)
+            self.objectManager.create_cube(i, 'assets/images/zam.jpg', GL_TEXTURE0)
 
     # Roda a cada frame da aplicação
     def update(self):
@@ -49,9 +49,9 @@ class Game: # Sistema pique Unity tlgd
         speed = 2.5
     
         if glfw.get_key(wnd, glfw.KEY_LEFT_SHIFT) == glfw.PRESS:
-            speed *= 2
+            speed *= 1.5
         elif glfw.get_key(wnd, glfw.KEY_LEFT_SHIFT) == glfw.RELEASE:
-            speed /= 2
+            speed /= 1.5
 
         camera_speed = speed * self.delta_time
 
