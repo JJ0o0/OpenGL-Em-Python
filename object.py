@@ -12,6 +12,11 @@ class Object:
         self.indices = indices
         self.vao = self.create_object(self.vertices, self.indices)
 
+        self.position = glm.vec3(0.0, 0.0, 0.0)
+        self.rotation = 0.0
+        self.rotation_axis = glm.vec3(1.0, 0.0, 0.0)
+        self.scale = glm.vec3(1.0, 1.0, 1.0)
+
     def create_object(self, vertices, indices):
         vertices = np.array(vertices, np.dtype(np.float32)) # 4 Bytes ou 32 Bits
         indices = np.array(indices, np.dtype(np.int32))     # 4 Bytes ou 32 Bits
@@ -53,8 +58,9 @@ class Object:
     def set_position(self, position=glm.vec3(0.0, 0.0, 0.0)):
         self.position = position
     
-    def set_rotation(self, rotation=0.0):
+    def set_rotation(self, axis=glm.vec3(1.0, 0.0, 0.0), rotation=0.0):
         self.rotation = rotation
+        self.rotation_axis = axis
     
     def set_scale(self, scale=glm.vec3(1.0, 1.0, 1.0)):
         self.scale = scale
@@ -62,7 +68,7 @@ class Object:
     def create_model_matrix(self, shader):
         self.model = glm.mat4(1.0)
         self.model = glm.translate(self.model, self.position) # vec3
-        self.model = glm.rotate(self.model, glm.radians(self.rotation), glm.vec3(1.0, 0.3, 0.5)) # float
+        self.model = glm.rotate(self.model, glm.radians(self.rotation), self.rotation_axis) # float e vec3
         self.model = glm.scale(self.model, self.scale) # vec3
 
         shader.set_matrix4_uniform('model', self.model)
