@@ -3,6 +3,10 @@ import glfw
 from OpenGL.GL import *
 from pyglm import glm
 
+import numpy as np
+
+from light_manager import LightManager
+
 class Game: # Sistema pique Unity tlgd
 
     # Roda no primeiro frame da aplicação
@@ -16,11 +20,22 @@ class Game: # Sistema pique Unity tlgd
         self.last_time = 0.0
 
         self.positions = [
-            glm.vec3(  0.0,  0.0, -5.0  )
+            glm.vec3(  0.0,  -0.5,  0.0  )
+        ]
+
+        self.lightPositions = [
+            glm.vec3(  0.0,  4.0,  0.0  ),
+            glm.vec3(  2.0,  0.0,  0.0  )
         ]
 
         for i in range(len(self.positions)):
-            self.objectManager.create_cube(i, 'assets/images/zam.jpg', GL_TEXTURE0)
+            self.objectManager.create_cube(i, 'assets/images/bricks_color.jpg', 'assets/images/bricks_specular.jpg')
+        
+        self.lightManager = LightManager(self.shader, self.objectManager)
+        
+        # for i in range(len(self.lightPositions)):
+        #     self.lightManager.create_point_light(i)
+
 
     # Roda a cada frame da aplicação
     def update(self):
@@ -28,17 +43,29 @@ class Game: # Sistema pique Unity tlgd
         self.input_update()
 
         self.shader.use()
+        
+        self.shader.set_vec3_uniform('lightColor', glm.vec3(1.0))
+        self.shader.set_float_uniform('material.shininess', 8.0)
+
+        # for i in range(len(self.lightManager.point_lights)):
+        #     self.lightManager.set_point_light_parameters('pointLight[' + str(i) + ']', self.lightPositions[i])
+        
+        self.lightManager.set_directional_light_parameters(glm.vec3(-0.2, -1.0, -0.3))
 
         for i in range(self.objectManager.get_object_list_length()):
             obj = self.objectManager.get_object(i)
             obj.set_position(self.positions[i])
-            obj.set_rotation(glm.vec3(0.0, 0.0, 1.0), glfw.get_time() * 100)
+            obj.set_rotation(glm.vec3(0.0, 0.0, 1.0), 0)
+            obj.set_scale(glm.vec3(1.0, 1.0, 1.0))
+            obj.create_object_material(self.shader, obj.ambientTextureIndex, obj.specularTextureIndex, 8.0)
             obj.create_model_matrix(self.shader)
 
             obj.render()
 
         self.camera.update(45, self.window.WIDTH, self.window.HEIGHT, 0.1, 100.0)
         self.camera.send_to_shader(self.shader)
+
+        self.lightManager.render(self.camera, self.lightPositions)
     
     def input_update(self):
         wnd = self.window.window
@@ -76,4 +103,5 @@ class Game: # Sistema pique Unity tlgd
     
     def close(self):
         self.shader.cleanup()
+        self.lightManager.lightShader.cleanup()
         self.objectManager.cleanup()

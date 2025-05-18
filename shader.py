@@ -35,6 +35,18 @@ class Shader:
         loc = glGetUniformLocation(self.shaderProgram, name)
         glUniformMatrix4fv(loc, 1, GL_FALSE, glm.value_ptr(value))
     
+    def set_vec3_uniform(self, name, value):
+        loc = glGetUniformLocation(self.shaderProgram, name)
+        glUniform3fv(loc, 1, glm.value_ptr(value))
+    
+    def set_float_uniform(self, name, value):
+        loc = glGetUniformLocation(self.shaderProgram, name)
+        glUniform1fv(loc, 1, value)
+    
+    def set_int_uniform(self, name, value):
+        loc = glGetUniformLocation(self.shaderProgram, name)
+        glUniform1i(loc, value)
+    
     def cleanup(self):
         if hasattr(self, 'shaderProgram') and self.shaderProgram:
             glDeleteProgram(self.shaderProgram)

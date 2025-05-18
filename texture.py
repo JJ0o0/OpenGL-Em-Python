@@ -20,8 +20,8 @@ class Texture:
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData)
     
-    def bind(self, index=GL_TEXTURE0):
-        glActiveTexture(index)
+    def bind(self, index=0):
+        glActiveTexture(GL_TEXTURE0 + index)
         glBindTexture(GL_TEXTURE_2D, self.texture)
     
     def unbind(self):

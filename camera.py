@@ -2,7 +2,7 @@ from pyglm import glm
 
 class Camera:
     def __init__(self, width, height):
-        self.position = glm.vec3(0.0, 0.0, -3.0)
+        self.position = glm.vec3(0.0, 0.0, 3.0)
         self.front = glm.vec3(0.0, 0.0, -1.0)
         self.up = glm.vec3(0.0, 1.0, 0.0)
         self.target = glm.vec3(0.0, 0.0, 0.0)
